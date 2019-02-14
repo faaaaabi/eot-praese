@@ -1,0 +1,1110 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Dem Browser beibringen Pong zu spielen</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css">
+		<link rel="stylesheet" href="css/custom.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section class="center" data-markdown>
+					<script type="text/template">
+						## Dem Browser beibringen Pong zu spielen
+						#### Eine Einführung in künstliche neuronale Netze
+						#### <small></small>
+
+						<small>Fabian Meyer - engineering on tap #5 - 15.02.2019</small>
+						<small></small>
+
+					</script>
+				</section>
+
+				</section>
+
+				<!--
+				Vorstellung
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Wer spricht da?
+						<div>
+							<img width=70% src="img/233721530961268991.jpg"/>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Vorstellung - Katzen
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Wer spricht da?
+						<div>
+							<img width=45% src="img/Katzen.jpg"/>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Vorstellung - Kubernetes
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Wer spricht da?
+						<div>
+							<img width=35% src="img/Mastubatorium.jpg"/>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Vorstellung - Was erwartet euch?
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Vorstellung
+							### Was euch erwartet
+							
+							* Kurze Einführung
+								* Was sind Neuronen überhaupt?
+								* Warum überhaupt künstliche neuronale Netze?
+								* Künstliches Neuron: Implementierung des biologischen Vorbilds
+								* Wie lernen künstliche neuronale Netze?
+								* Typische Problemstellungen
+							* Demo
+								* Der Browser lernt Pong
+							* Wo und wie fange ich an?
+							<aside class="notes" data-markdown="">
+							</aside>
+						</script>
+					</section>
+
+				<!--
+				Vorstellung - Warum neuronale Netze
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Warum neuronale Netze?
+						<div>
+							<img width=30% src="img/ct_Artikel.png"/>
+							<ul>
+								<li>
+									https://www.heise.de/select/ct/2016/06/1458191210995647
+								</li>
+							</ul>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Vorstellung - Bachelorarbeit
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Bachelorarbeit
+						<div>
+							<img width=50% src="img/DiscoGANWebApp.png"/>
+							<ul>
+								<li>Kategorieübrgreifende Produktsuche</li>
+							</ul>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+								<!--
+				Vorstellung - Bachelorarbeit
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Vorstellung
+						### Bachelorarbeit
+						<div>
+							<img width=50% src="img/ProductSearchResults.png"/>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+				</section>
+
+
+				<!--
+				Was ist ein Neuron - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Zurück an den Anfang
+					</script>
+				</section>
+
+				<!--
+				Was ist ein Neuron - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Was ist ein Neuron ?
+					</script>
+				</section>
+
+				<!--
+				Was ist ein Neuron - Aufbau
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Was ist ein Neuron ?
+						### Aufbau
+						<div class="sidybyside-container">
+							<div class="one">
+								<img class="fragment fade-in" data-fragment-index="0" width="80%" src="img/Neuron.svg"/>
+								<img class="fragment fade-in" data-fragment-index="2" width="40%" src="img/Aktionspotential.svg"/>
+							</div>
+							<div class="two">
+								<ul>
+									<li class="fragment fade-in" data-fragment-index="1">Auf Erregungsübertragung spezialisierte Zelle</li>
+									<p></p>
+									<li class="fragment fade-in" data-fragment-index="3">"Alles-oder-nichts-Prinzip"</li>
+									<p></p>
+									<li class="fragment fade-in" data-fragment-index="4">Ca. 86 Mrd. im menschlichen Gehirn</li>
+									<p></p>
+									<li class="fragment fade-in" data-fragment-index="5"> durchschnittlich mit 1000 anderen Neuronen verbunden</li>
+								</ul>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Auf Erregungsübertragung spezialisierte Zelle
+
+							- Im Axonhüge werden alle ankommenden Reize aufsummiert
+
+							- Bei übersteigen einer Reizschwelle, auslösen des Aktionspotetials
+								- Dabei gilt: alles oder nichts
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Was sind neuronale Netze - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Was sind neuronale Netze ?
+					</script>
+				</section>
+
+				<!--
+				Was sind Neuronale Netze
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Was sind neuronale Netze ?
+						### Aufbau
+						<div>
+								<div style="position: relative" data-fragment-index="0" class="fragment fade-in">
+									<img class="fragment fade-out center" data-fragment-index="1" src="img/NeuronenNetz.svg"/>
+									<img style="position: absolute; left:28.7%" data-fragment-index="1" class="fragment fade-in center" src="img/NeuronenNetzSynapse.svg"/>
+								</div>
+                                <ul>
+                                <li class="fragment fade-in">Gewichtung der Verbindung in den Synapsen</li>
+                                <p></p>
+                                <li class="fragment fade-in">Speicherung der Information in den Verbindungen</li>
+                                <p></p>
+                                <li class="fragment fade-in">Ca. 100 Bio. gewichtete Verbindungen (Mensch)</li>
+                                </ul>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Netzwerk vieler Neuronen
+
+							- Reizübertragung findet chmeisch in der Verbindung (Synapse) statt
+							 - Axonterminal schüttet dabei Neurotransmitter aus
+							 - Dentriten können diesen in Rezeptoren aufnehmen
+							 - Verbindungen sind gewichtet. Anpassung der chem. Vorgänge
+							 - Forschung geht davon aus, dass Information hauptsächlich durch das Verändern der Gewichtung stattfindet
+							 - Bei ca. 86 Mrd. Neuronen mit durchschn. 1000 Verbindungen: 100 Bio. gewichtete Verbindungen
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Warum künstliche neuronale Netzen - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Warum künstliche neuronalen Netze?
+						<aside class="notes" data-markdown="">
+							- Dazu im folgenden zwei Besipiele
+							- Aufschluss über die Informationsvaerarbeitung im Computer und Gehirn
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Warum künstliche neuronale Netzen - Informationsverarbeitung im Gehirn
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Warum künstlichen neuronalen Netze?
+						### Informationsverarbeitung im Gehirn
+						<div class="sidybyside-container">
+							<div class="fragment fade-in">
+									<h4 class="theme-heading">Berechne folgendes einfach mal im Kopf</h4>
+									<p style="text-align: center">$$ 293944735,96 \\ \cdot 42$$</p>
+									<h4 class="theme-heading">Ergebnis</h4>
+									<p></p>
+									<span style="position: relative">
+										<span onclick="changeElementContent(this, '≈12345678910')" >?</span>
+									</span>
+									<p></p>
+							</div>
+						</div>
+					</script>
+				</section>
+
+				<!--
+				Warum künstliche neuronale Netzen - Informationsverarbeitung im Gehirn
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Warum künstlichen neuronalen Netze?
+						### Informationsverarbeitung im Gehirn
+						<div class="sidybyside-container">
+							<div class="center fragment fade-in">
+								<h4 class="theme-heading">Erkenne das Objekt im Bild</h4>
+								<p><img style="width: 20%" src="img/A-brown-cat-eyes-close-up_1920x1440.jpg"></p>
+								<h4 class="theme-heading">Ergebnis</h4>
+								<p>?</p>
+							</div>
+						</div>
+					</script>
+				</section>
+
+				<!--
+				Warum künstliche neuronale Netzen - Informationsverarbeitung im Gehirn
+				-->
+				<section class="content-slide" data-markdown="">
+
+					<script type="text/template">
+						#### Warum künstliche neuronalen Netze ?
+						### Informationsverarbeitung im Gehirn
+						<div class="sidybyside-container">
+
+							<div class="one fragment fade-in">
+								<div style="position: relative; height: 4em">
+									<p>$$ 293944735,96 \\ \cdot 42 $$</p>
+								</div>
+								<h4 class="theme-heading">Computer</h4>
+								<p>
+									<ul style="top: 5%">
+										<li>Taktdauer < 1 ns</li>
+										<li>Sequenziell</li>
+									</ul>
+								</p>
+							</div>
+							<div class="two fragment fade-in">
+								<div style="height: 4em">
+									<p><img style="width: 30%" src="img/A-brown-cat-eyes-close-up_1920x1440.jpg"></p>
+								</div>
+								<h4 class="theme-heading">Gehirn</h4>
+
+								<p>
+								<ul>
+									<li>Reizübertragung <= 5 ms</li>
+									<li>Hochgradig parallel</li>
+								</ul>
+								</p>
+							</div>
+							<aside class="notes" data-markdown="">
+								- Multiplikation in Digitaltechnik: Abfolge von Additions- und Schiebeoperationen
+
+								- Neuronen feuern mit Höchstgeschwindigkeit von 200 Hz
+
+								- Neuronen unfähig zu Berechnung mit vielen seuqntiellen Operation
+
+								- Aber dafür Meister in der parallelen Verarbeitung von Daten
+							</aside>
+						</div>
+					</script>
+				</section>
+
+				<!--
+				Warum künstliche neuronale Netzen - Allzweckneuronen
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Warum künstlichen neuronalen Netze ?
+						### Allzweckneuronen
+
+						<div class="sidybyside-container">
+
+							<div class="one fragment fade-in">
+								<h4 class="theme-heading">Neu verkabelt</h4>
+								<p><img width="60%" src="img/Frettchen-1-480x300.jpg"></p>
+								<p>
+								Umverkablung von visuellem und auditivem Kortex bei Frettchen
+								</p>
+							</div>
+							<div class="gap"></div>
+							<div class="two fragment fade-in">
+								<h4 class="theme-heading">Frühkindliche Hirnschäden</h4>
+								<p><img width="60%" src="img/child-07.jpg"></p>
+								<p>
+									Erholung von Hirnschäden
+								</p>
+							</div>
+							<aside class="notes" data-markdown="">
+								- Folgende Beispiele zeigen, dass sich Neruonale-Netze im Urstadium scheinbar universell Anpassen können
+
+								- Frettchen: Forscher durchtrennten den Nerv der auditive Signale in den dafür vorgeshenen Teil des Gehirns transporiert
+								-- Der optische Nerv bildete daraufhin eine Doppelverbindung aus, und verband sodann Hör- und Sehnerv mit dem Teil des Kortex für visuelle Reize
+
+								- Kleinkinder und Babies erholen sich häufig von Hirnschäden
+							</aside>
+						</div>
+					</script>
+				</section>
+
+				<!--
+				Was sind Neuronale Netze
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Was sind neuronale Netze ?
+						### Allzweckneuronen
+						<img width="70%" src="img/NeuronenNetzDefekt.svg"/>
+						<p>Universeller Lernmechanismus, der Spezialisierung ermöglicht</p>
+					</script>
+				</section>
+
+				<!--
+				Implementierung des biologischen Vorbilds - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Implementierung des biologischen Vorbilds
+					</script>
+				</section>
+
+				<!--
+				Implementierung des biologischen Vorbilds - Gewichtete Verbindungen
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Implementierung des biologischen Vorbilds
+						### Künstliches Neuron
+
+						<div class="sidybyside-container">
+							<div class="one fragment fade-in">
+								<p><img width="60%" src="img/KuesntlicheNeuron.svg"></p>
+							</div>
+							<div class="two">
+								&nbsp;
+								<div class="fragment fade-in">
+									<h4 class="theme-heading">Propagierungsfunktion</h4>
+									<p>$$ z = \sum_{i} x_iw_i $$</p>
+								</div>
+								&nbsp;
+								<div class="fragment fade-in">
+									<h4 class="theme-heading">Aktivierungsfunktion</h4>
+									<p>$$ y = \phi(z) $$</p>
+								</div>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Empfängt wie bio. Vorbild (Aktivierungen) von anderen Neuronen
+							-- Nimmt numerische Werte entgegen. Keine elektrischen oder chemischen
+							-- Sendet wiederum an andere Neuronen
+
+							-- Propagierungsfunktion bildet den sogenannten Netinput. Die Summe über alle gewichteten Eingaben
+							 - Wie Axonhügel im biol. Neuron
+
+							-- Die Aktivierungsfunktion beschreibt den Zustand / die Aktivierung eines Neurons für diesen Netinput
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Implementierung des biologischen Vorbilds - Künstliche Neuronen
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Implementierung des biologischen Vorbilds
+						### Aktivierungsfunktion
+
+						<div class="sidybyside-container">
+							<div class="one">
+								<p><img class="fragment fade-ine" data-fragment-index="0" width="60%" src="img/Sigmoid-function-2.svg"></p>
+								<p><img class="fragment fade-ine" data-fragment-index="2" width="60%" src="img/Rectifier_and_softplus_functions.svg"></p>
+							</div>
+							<div class="two">
+								&nbsp;
+								<div class="fragment fade-in" data-fragment-index="1">
+									<h4 class="theme-heading">Sigmoid (Logistische Funktion)</h4>
+									<p>$$ y = \phi(z) = \frac{1}{1+e^{-z}} $$</p>
+								</div>
+								<div class="fragment fade-in" data-fragment-index="3">
+									&nbsp;
+									<h4 class="theme-heading">Rectified Linear Unit</h4>
+									<p>$$ y = \phi(z) = max(0,z) $$</p>
+									<p>$$ y = \phi(z) =
+										\begin{cases}
+										z & \text{für } z > 0 \\\
+										0 & \text{sonst}
+										\end{cases} $$
+									</p>
+								</div>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Sollen gewissermaßen das Alles oder nicht Prinzip nachbildern
+							 - Tun sie aber nur Bedingt. Aktivierungsfunktion die dieses Prinzip zu ersnt nehmen
+							   zeigen keine gute Performance beim TRaining
+
+							- Aktivierungsfunktion müssen differenzierbar sein. Wichtig für Training.
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - TITEL
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Implementierung des biologischen Vorbilds
+						### Netzwerke Künstlicher Neuronen
+
+						<img class="fragment fade-in" width="60%" src="img/SchemaNeuronalesNetz2_PfeilInf.svg"/>
+						<aside class="notes" data-markdown="">
+							- Wie sehen (feed-forward) künstliche Neuronale Netze aus?
+
+							- I.d.R bestehend aus drei Formen von Schichten.
+							 - Eingabeschicht: nimmt Eingabe Features entgegen
+
+							- Versteckteschicht: Ermöglicht das erkennen von Subveatures
+							  - Für einfache Probleme verteckte Schicht kein muss
+
+							- Ausgabeschicht: Gibt das ergebnis aus. Je nach Problem ein oder mehrere Ausgebeneuronen
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Implementierung des biologischen Vorbilds - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Wie lernen künstliche neuronale Netze ?
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Rückblick: bilogisches Neuron
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Rückblick: biologisches Neuron
+
+						<div class="sidybyside-container">
+							<div class="one fragment fade-ine">
+								<h4 class="theme-heading">biologisches Neuron</h4>
+								<p><img width="80%" src="img/NeuronenNetzSynapse.svg"></p>
+							</div>
+							<div class="two">
+								<div class="fragment fade-in">
+									<h4 class="theme-heading">Künstliches Neuron</h4>
+									<p><img width="40%" src="img/KuesntlicheNeuron.svg"></p>
+								</div>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- biol. Neuron passt chemische Vorgänge in den Verbindungen an
+
+							- künstliche Neuron passt numerischen Gewichtswert der Verbindung an
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Supervised Learning - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Supervised Learning
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Supervised Learning
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Supervised Learning
+						<ul style="float: left;">
+							<li class="fragment fade-in" data-fragment-index="2" >Datensatz mit gelabelten Daten $$ Inputs = [(1,0), (0,0), (0,1), (1,1)] \\\ Targets = [1,0,1,0] $$</li>
+							<li class="fragment fade-in" data-fragment-index="3" >Eingabe von Daten ins Netz</li>
+							<li class="fragment fade-in" data-fragment-index="4" >Fehler zwischen erhofftem und tatsächlichem Output berechnen $$ Output = (0) $$</li>
+							<li class="fragment fade-in" data-fragment-index="5" >Gewichtswerte anpassen, um Fehler zu verringern</li>
+						</ul>
+						<div data-fragment-index="0" class="fragment fade-in">
+							<img style="position: absolute; width: 55%; left: 20%" data-fragment-index="1" class="fragment fade-out" src="img/XORNetz.svg"/>
+							<ul data-fragment-index="1" class="fragment fade-out">
+								<li>Beispielsweise Modellierung der XOR Funktion</li>
+							</ul>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Wie könnte eine Methode aussehen, die künstliche Neuronale Netze lernen lässt?
+
+							- Zu Beginn zufällige Gewichtswerte: Großer Fehler
+
+							- Angenommen wir gewünschter Output bekannt
+							  - können wir den Fehler messe
+
+							- Beispiel XOR Funktion
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Error Function MSE
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Error-Function
+						<div class="sidybyside-container">
+							<div class="center fragment fade-in">
+								<h4 class="theme-heading">Mean Squared Error - MSE</h4>
+								$$
+								E = \frac{1}{2} \sum_{d \in \mathcal{D}} (\hat{y}^d - y^d)^2 \\\
+								\\\
+								\begin{align}
+								\text{mit} \notag \\\
+								y &=: \text{tatsächlicher Output}  \notag \\\
+								\hat{y} &=: \text{erwarteter Output} \notag \\\
+								d &=: \text{Trainingsbeispiel aus } \mathcal{D} \notag
+								\end{align}
+								$$
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Wie können wir den Fehler messen
+							 - Über eine Errorfunktion
+
+							- Misst sozusagen den Abastand zwischen richtigem under erhofftem Ergebis
+							 - Für jedes Neuron einzeln
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Error Function Visuel
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Error-Function
+						<div class="sidybyside-container">
+							<div class="center fragment fade-in">
+								<img width="60%" src="img/surface.png">
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Größe des Errors ist abhängig von den Gewichtswerten
+
+							- Wir wollen die Gewichtswerte so anpassen, das wir ins blaue Tal kommen
+
+							- Wir könnten die besten Gewichtswerte raten
+							 - Bei zweien vielleicht noch möglich.
+							 - Ist mit einigen dutzend Gewichtswerte allerdings schon nicht mehr machbar
+							  - Zahl der Möglichen Kombination steigt ins unendliche
+						</aside>
+					</script>
+				</section>
+
+
+				<!--
+				Wie lernen KNN - Gradient Descent
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Gradient Descent
+						<div class="sidybyside-container">
+							<div class="fragment fade-in">
+								<h4 style="text-align: center" class="theme-heading">Ableitung der Error-Function nach betrachtetem Gewichtswert</h4>
+								$$ \frac{\partial E}{\partial w_{i}} = \frac{\partial E}{\partial y_i} \cdot \frac{\partial y_i}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_i} $$
+							</div>
+							&nbsp;
+							<div class="fragment fade-in">
+								<h4 style="text-align: center" class="theme-heading">Bestandteile der Error-Function</h4>
+								<img style="width: 30%" src="img/MSEBILD.png"><img style="width: 20.5%; margin-left: 2%" src="img/ygleichphi.png"><img style="width: 23.5%; margin-left: 2%" src="img/Propabild.png">
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Um die Richtung des steilesten gefälles heruaszubekommen
+							 - Schauen wir uns nacheinander alles Gewichtswerte an
+
+							- Um den Einfluss eines Gewichtswerte auf den Gesamterror zu ermittel
+							 - Error-Funktion nach diesem Gewichtswert ableiten
+
+							- Da Error-Funktion nur indirekt vom Gewichtswer abhängt - Ableitung mit Kttenregel
+							 - Sieht kompliziert aus. Schaut man sich die Bestandteile an, sieht das Machbar aus
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Anpassung der Gewichtswerte
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Wie lernen künstliche neuronale Netze ?
+						### Anpassung der Gewichtswerte
+						<div class="sidybyside-container">
+							<div>
+								<div class="fragment fade-in">
+									<h4 style="text-align: center" class="theme-heading">Größe der Gewichtsänderung</h4>
+									$$ \Delta w_i = -\epsilon \frac{\partial E}{\partial w_i} $$
+									&nbsp;
+									$$\epsilon := \text{Learning-Rate} $$
+									&nbsp;
+								</div>
+								<div class="fragment fade-in">
+									<h4 style="text-align: center" class="theme-heading">Neuer Gewichtswert</h4>
+									$$ 	w_i^{Update} = w_i - \Delta w_i $$
+								</div>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Wir wissen jetzt in welche Richtung wir gehen müssen
+							 - allerdings nicht wie weit
+
+							- Deltwa gibt an, um wieviel der momentan betrachtete Gewichtswert angepasst werden soll
+							 - Learning-Rate sagt, wie groß dieser Schritt sein soll
+							  - Learning-Rate sollte sorgfälltig gewählt werde
+							   - Zu klein - Training dauert lange
+							   - Zu groß - Schießt man wohmöglich über das Ziel hinaus
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Wie lernen KNN - Gradient Descent
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Wie lernen künstliche neuronale Netze ?
+							### Gradient Descent
+							<div class="sidybyside-container">
+								<div class="center fragment fade-in">
+									<img width="40%" src="img/surface_descent.png">
+								</div>
+								<ul class="center fragment fade-in">
+									<li>Schrittweise Anpassung der Gewichtswerte in Richtung des steilsten Abstiegs</li>
+								</ul>
+							</div>
+							<aside class="notes" data-markdown="">
+								- Mit unendlicher Rechnepower könnten wir jede mögliche Kombination uasprobieren
+								 - Haben wir jedoc nicht
+								- Deshalb Schrittweiser Abstieg in richtung des steilsten gefälles.
+							</aside>
+						</script>
+					</section>
+
+				<!--
+				Wie lernen KNN - Backpropagation - TITEL
+				-->
+				<section class="center" data-markdown="">
+						<script type="text/template">
+							## Backpropagation
+						</script>
+					</section>
+
+				<!--
+				Typische Mathe - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						<div class="center">
+							<img width="40%" src="img/math.gif">
+						</div>
+					</script>
+				</section>
+
+								<!--
+				Typische Mathe Dumb - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						<div class="center">
+							<img width="40%" src="img/mathDumb.gif">
+						</div>
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - TITEL
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Typische Problemstellungen
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - Regressionsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Regressionsproblem
+						<img class="fragment fade-in" style="width: 80%;;" src="img/linear-nonlinear-relationships.png">
+						<ul class="fragment fade-in">
+							<li>
+								Voerhersage eines kontinuierlichen Wertes auf Basis einer oder mehrerer Eingangswerte
+							</li>
+						</ul>
+						<aside class="notes" data-markdown="">
+							- Regressionsproblem sind Probleme, bei denen der zusammenhang zwischen einem oder
+							  mehreren Variablen modeeliert werden.
+							  - Beispielsweise der Umsatz eines Eisverkäufers mit der Außentemperatur
+							  - Im einfachsten Fall kann der Zusammenhang linear über eine Gerade modelliert werden
+
+							- Zusammenhäng vieler verschiedener Variablen kann hergestellten werden.
+						</aside>
+					</script>
+				</section>
+
+
+				<!--
+				Typische Problemstellungen - Klassifizierungsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Klassifikationsproblem
+						<img class="fragment fade-in" style="width: 60%;;" src="img/decision-boundary.jpg">
+						<ul class="fragment fade-in">
+							<li>
+								Einteilen in eine von mehreren Klassen
+							</li>
+						</ul>
+						<aside class="notes" data-markdown="">
+							- Hier will ich nicht den Zusammenhang zweier oder mehrerer Variablen modellieren
+							  sondern an Hand des Zusammenhangs einer oder mehrerer Variablen auf eine Klasse
+							  oder Gruppe schließen
+
+							- In diesem Beispiel wird durch die Größe des Blüte- und Kelchblatts, auf die Iris Spezien
+							  geschlossen
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - Beispiel/Demo Regressionsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Beispiel/Demo Regressionsproblem
+
+						<div class="sidybyside-container fragment fade-in">
+							<h4 class="theme-heading">Pong spielen</h4>
+							<img style="width: 40%;;" src="img/pong.jpg">
+							<ul>
+								<li class="fragment fade-in">Regression auf Basis von zwei Variablen: (BallY, BallX)</li>
+								<li class="fragment fade-in">Regression soll für Schlägerposition (PadY), durchgeführt werden</li>
+							</ul>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Pflanzenspezies sind für uns vielleicht nicht so interessant
+
+							- Gibt es ein interessanteres Beispiel?
+							- Wie wäre es, dem Computer das Pong-Spielen beizubringen?
+
+							- Hier kann die Regression für die Schlägerposition padY auf Basis der Variablen BallY und
+							  BallX stattfinden.
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - Beispiel/Demo Regressionsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Beispiel/Demo Regressionsproblem
+
+						<div class="fragment fade-in sidybyside-container">
+							<h4 class="theme-heading">Schema des Netzwerks</h4>
+							<img style="width: 50%;" src="img/SchemaPong.svg">
+						</div>
+						<aside class="notes" data-markdown="">
+							- Wie könte ein Netz für dieses Problem aussehen?
+
+							- Das Netz benötigt für jedes Feature/Variable, ein Eingabeneuron
+
+							- Die Anzahl der versteckten Schichten und Neuronen pro Schicht, sollte nach Komplexität
+							  des Problems gewählt werden
+							  - Mehr Schichten beudetet häufig bessere Fähigkeit, Komplexere Probleme modellieren zu können
+							   - aber vorsicht
+							   - trial and Error
+							   - Literatur häufig mindestens zwei Schichten mit absteigender Anzahl zum Output hin
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Pong - Müssen wir das jetzt selber implementieren?
+				-->
+				<section class="center" data-markdown="">
+						<script type="text/template">
+							## Muss ich das jetzt alles selber implementieren?
+							<div class="fragment fade-in sidybyside-container">
+								<h3 class="theme-heading">Nope!</h4>
+								<img style="width: 20%;" src="img/brainjs.svg">
+								<h4>brain.js</h4>
+							</div>
+						</script>
+					</section>
+
+				<!--
+				Typische Problemstellungen - Beispiel/Demo Regressionsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Beispiel/Demo Regressionsproblem
+
+						<div class="sidybyside-container">
+							<div class="one" style="width: 50%">
+								<canvas id="pongCanvas" width="600" height="400" style="border:2px solid #93a1a1; background: rgba(255, 255, 255, 0.12)"></canvas>
+								<p><span id="pongStart" class="button greenish" >Start</span><span id="pongStop" class="button redish" >Stop</span></p>
+							</div>
+							<div class="two">
+								<div >
+									<h4 class="theme-heading">Trainingsstatus</h4>
+									<p id="numDatapoints"></p>
+								</div>
+								&nbsp;
+								<div >
+									<h4 class="theme-heading">Aktivierung</h4>
+									<p id="networkActivation"></p>
+								</div>
+								<div >
+									<h4 class="theme-heading">Learning status</h4>
+									<p id="trainStatus"></p>
+								</div>
+								<span style="font-size: 12px">[Return] Training aktivieren/deaktivieren</span><br>
+								<span style="font-size: 12px">[-] Netzwerk aktivieren/deaktivieren</span>
+							</div>
+						</div>
+						<aside class="notes" data-markdown="">
+							- Für eine Demo habe ich das zuvor gezeigt Netz mittels des JS-Framworks brain implementiert
+
+							- Es gibt zwei Modi - Trainieren und Aktivieren
+							 - über Enter kann ich das Training Starte und stoppen
+							 - Über Backslash, kann die Akivierung starten, das Netz übernimmt
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - Beispiel/Demo Klassifizierungsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Beispiel Klassifikationsproblem
+						<div class="sidybyside-container fragment fade-in">
+							<h4 class="theme-heading">Handgeschriebene Ziffern erkennen</h4>
+							<img style="width: 50%;;" src="img/mnist-digits.png">
+							<ul>
+								<li class="fragment fade-in">Klassifikation auf Basis von 784 Features (28 x 28 Pixel)</li>
+								<li class="fragment fade-in">Ausgabe/Klassifikation durch Ausgabe von Wahrscheinlichkeiten</li>
+							</ul>
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+						<aside class="notes" data-markdown="">
+							- Nun zu einem Beispiel für ein Klassifikationsproblem
+
+							- Hier gilt das Erkennen von Handgeschriebenen Ziffer als das Hello World
+
+							- MNIST Dataset - 60000 Trainings und 10000 Testdatensätze
+							 - 28 x 28 Pixel
+
+							- Ausgabe des Netzes in Form von Wahrscheinlichkeiten
+						</aside>
+					</script>
+				</section>
+
+				<!--
+				Typische Problemstellungen - Beispiel/Demo Regressionsproblem
+				-->
+				<section class="content-slide" data-markdown="">
+					<script type="text/template">
+						#### Typische Problemstellungen
+						### Beispiel/Demo Klassifikationsproblem
+
+						<div class="fragment fade-in sidybyside-container">
+							<h4 class="theme-heading">Schema des Netzwerks</h4>
+							<img style="width: 50%;" src="img/SchemaMNIST.svg">
+						</div>
+						<aside class="notes" data-markdown="">
+						</aside>
+					</script>
+					<aside class="notes" data-markdown="">
+						- Wie könnte ein Netz zur Ziffernerkennung aufgeaut sein?
+						 - Für jedes Feature, hier Pixel, in Eingabeneuron
+
+						 - Eine versteckte Schicht mit Hundert Neuronen
+						  - Verschiedene Quellen empfehlen verschiedene Konfiguration verteckter Schichten
+
+						 - Für jede zu erkennende Ziffer ein Ausgabeneuron
+						  - Gibt die Wahrscheinlichkeit aus, dass die Eingegebene Ziffer diejenige ist
+					</aside>
+				</section>
+
+				<!--
+				Tipps & Tricks - Wo soll ich anfangen?
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						## Wo soll ich anfagen?
+					</script>
+				</section>
+
+				<!--
+				Tipps & Tricks - Wo soll ich anfangen1
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Wo soll ich anfagen?
+							### Lesen-/sehenswertes
+							* CADL: Creative Applications of Deep Learning with TensorFlow (Kadenze)
+							* Andrew Ng: Neural Networks and Deep Learning (Coursera)
+							* deeplearningbook.org
+							* neuralnetworksanddeeplearning.com
+							* YouTube: Siraj Raval
+							* YouTube: Two Minute Papers
+						</script>
+				</section>
+
+				<!--
+				Tipps & Tricks - Wo soll ich anfangen2
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Wo soll ich anfagen?
+							### Frameworks
+							* Tief eintauchen in die Materie
+								* TensorFlow
+								* scikit-learn
+							* Ausprobieren      
+								* Keras	
+								* brain.js
+								* tensorflow.js
+								* PyTorch
+						</script>
+				</section>
+
+				<!--
+				Tipps & Tricks - Wo soll ich anfangen3
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Wo soll ich anfagen?
+							### Datensätze
+							* github: awesome-public-datasets
+							* selber machen
+						</script>
+				</section>
+
+				<!--
+				Tipps & Tricks - Wo soll ich anfangen3
+				-->
+				<section class="content-slide" data-markdown="">
+						<script type="text/template">
+							#### Reinforcement Learning
+							### Der Computer lernt selber Pong zu spielen
+							* openAI: Gym
+						</script>
+				</section>
+
+				<!--
+				Ende
+				-->
+				<section class="center" data-markdown="">
+						<script type="text/template">
+							## Ende
+							#### Fragen?
+
+						</script>
+				</section>
+
+								<!--
+				Grenzen und Probleme - Fazit
+				-->
+				<section class="center" data-markdown="">
+					<script type="text/template">
+						#### https://github.com/faaaaabi/neural-nets-pong
+						#### https://eot.bian-meyer.de/praese.pdf
+						#### @FabMeyer
+					</script>
+			</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script src="lib/js/misc/changeElementContent.js"></script>
+		
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/math/math.js', async: true },
+				]
+			});
+		</script>
+	</body>
+</html>
